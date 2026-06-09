@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>XINIX — Profils</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050508;--gd:#111118;--g:#2a2a3a;--gl:#4a4a6a;
+  --vd:#1a0a2e;--v:#6b21a8;--vm:#7c3aed;--vl:#a855f7;--vg:#c084fc;
+  --w:#e2e8f0;--wd:#94a3b8;--r:#ff2222;
+  --o:#f97316;--od:#7c2d12;--ol:#fb923c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#050508;color:var(--w);font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;-webkit-text-size-adjust:100%;touch-action:manipulation}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(107,33,168,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(107,33,168,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:28px;background:var(--gd);border-bottom:1px solid var(--v);z-index:10}
+.c{position:fixed;width:18px;height:18px;z-index:5;opacity:.3}
+.c.tl{top:36px;left:8px;border-top:1px solid var(--v);border-left:1px solid var(--v)}
+.c.tr{top:36px;right:8px;border-top:1px solid var(--v);border-right:1px solid var(--v)}
+.c.bl{bottom:8px;left:8px;border-bottom:1px solid var(--v);border-left:1px solid var(--v)}
+.c.br{bottom:8px;right:8px;border-bottom:1px solid var(--v);border-right:1px solid var(--v)}
+
+.wrap{position:relative;z-index:2;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:4rem 1.25rem 5rem}
+
+/* Header */
+.hdr{text-align:center;margin-bottom:2.5rem;width:100%;max-width:600px}
+.hlbl{font-size:.62rem;letter-spacing:.4em;color:var(--vl);margin-bottom:.6rem;opacity:0;animation:fi .5s .2s forwards}
+.htitle{font-family:'Rajdhani',sans-serif;font-size:clamp(2.2rem,8vw,4rem);font-weight:700;letter-spacing:.2em;color:var(--w);opacity:0;animation:fi .5s .4s forwards,glitch 8s 2s infinite;text-shadow:0 0 20px rgba(168,85,247,.5)}
+.hsub{font-size:.65rem;letter-spacing:.25em;color:var(--gl);margin-top:.4rem;opacity:0;animation:fi .5s .6s forwards}
+.divl{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--v),transparent);margin:1.5rem 0;opacity:0;animation:fi .5s .8s forwards}
+.hint{font-size:.7rem;color:var(--wd);letter-spacing:.05em;line-height:1.8;opacity:0;animation:fi .5s 1s forwards;text-align:center;margin-bottom:2rem}
+
+/* Grid profils */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem;width:100%;max-width:900px;opacity:0;animation:fi .5s 1.2s forwards}
+
+/* Card profil */
+.pcard{background:linear-gradient(135deg,var(--gd) 0%,rgba(26,10,46,.6) 100%);border:1px solid var(--g);border-left:3px solid var(--v);padding:1.1rem 1.25rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
+.pcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(107,33,168,.08),transparent);opacity:0;transition:opacity .25s}
+.pcard:hover::before,.pcard:active::before{opacity:1}
+.pcard:hover,.pcard:active{border-color:var(--vl);border-left-color:var(--ol);box-shadow:0 0 20px rgba(107,33,168,.2),inset 0 0 20px rgba(107,33,168,.05);transform:translateY(-2px)}
+.pcard-icon{font-size:1.4rem;margin-bottom:.6rem;display:block}
+.pcard-title{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:var(--w);letter-spacing:.08em;margin-bottom:.3rem}
+.pcard-sub{font-size:.6rem;color:var(--ol);letter-spacing:.2em;text-transform:uppercase}
+.pcard-arrow{position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--gl);font-size:.8rem;transition:all .25s}
+.pcard:hover .pcard-arrow,.pcard:active .pcard-arrow{color:var(--vl);right:.75rem}
+
+/* Modal détail */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.modal-bg.show{display:flex;animation:fi .25s forwards}
+.modal{background:var(--gd);border:1px solid var(--vm);border-top:3px solid var(--ol);padding:2rem 1.5rem;width:100%;max-width:560px;position:relative;margin:auto}
+.modal::before{content:'';position:absolute;top:-1px;left:20px;right:20px;height:2px;background:linear-gradient(90deg,transparent,var(--ol),transparent)}
+.modal-label{font-size:.55rem;letter-spacing:.35em;color:var(--ol);margin-bottom:.5rem;text-transform:uppercase}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:1.6rem;font-weight:700;color:var(--w);letter-spacing:.1em;margin-bottom:1.25rem;line-height:1.2}
+.modal-divider{height:1px;background:linear-gradient(90deg,var(--v),transparent);margin-bottom:1.25rem}
+.modal-text{font-size:.78rem;color:var(--wd);line-height:2;letter-spacing:.03em}
+.modal-text em{color:var(--vg);font-style:normal}
+.modal-close{margin-top:1.75rem;width:100%;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.15em;padding:.85rem;border:1px solid var(--g);cursor:pointer;background:rgba(0,0,0,.3);color:var(--wd);transition:all .2s;-webkit-tap-highlight-color:transparent}
+.modal-close:hover,.modal-close:active{border-color:var(--vl);color:var(--w)}
+
+/* Logo */
+.logo{position:fixed;bottom:1.2rem;right:1.2rem;z-index:5;opacity:.2;width:60px;height:60px}
+
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glitch{
+  0%,90%,100%{text-shadow:0 0 20px rgba(168,85,247,.5),0 0 60px rgba(168,85,247,.2)}
+  92%{text-shadow:-2px 0 var(--vl),2px 0 #06b6d4}
+  94%{text-shadow:2px 0 var(--vl),-2px 0 #06b6d4}
+  96%{text-shadow:0 0 20px rgba(168,85,247,.5)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+<div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+
+<div class="wrap">
+  <div class="hdr">
+    <div class="hlbl">// PROFILS RECHERCHÉS //</div>
+    <div class="htitle">XINIX</div>
+    <div class="hsub">ORGANISATION &nbsp;·&nbsp; RECRUTEMENT</div>
+    <div class="divl"></div>
+    <div class="hint">On ne cherche pas des suiveurs.<br>On cherche des bâtisseurs.<br>Si tu ne te reconnais pas — transmets à quelqu'un qui pourrait.</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="pcard" onclick="showProfil('informaticien')">
+      <span class="pcard-icon">⬡</span>
+      <div class="pcard-title">Informaticien</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('negociateur')">
+      <span class="pcard-icon">◈</span>
+      <div class="pcard-title">Négociateur</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('juriste')">
+      <span class="pcard-icon">⊗</span>
+      <div class="pcard-title">Juriste</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('maker')">
+      <span class="pcard-icon">⬢</span>
+      <div class="pcard-title">Maker</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('broker')">
+      <span class="pcard-icon">◉</span>
+      <div class="pcard-title">Broker Relationnel</div>
+      <div class="pcard-sub">Homme de réseau</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('financier')">
+      <span class="pcard-icon">◎</span>
+      <div class="pcard-title">Financier</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('scientifique')">
+      <span class="pcard-icon">⊕</span>
+      <div class="pcard-title">Scientifique</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('porteparole')">
+      <span class="pcard-icon">▣</span>
+      <div class="pcard-title">Porte-parole</div>
+      <div class="pcard-sub">Communicant politique</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+    <div class="pcard" onclick="showProfil('securite')">
+      <span class="pcard-icon">◆</span>
+      <div class="pcard-title">Agent de Sécurité</div>
+      <div class="pcard-sub">Polyvalent</div>
+      <span class="pcard-arrow">›</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-label" id="modalLabel"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-divider"></div>
+    <div class="modal-text" id="modalText"></div>
+    <button class="modal-close" onclick="closeModal()" type="button">// FERMER //</button>
+  </div>
+</div>
+
+<svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <circle cx="100" cy="100" r="95" stroke="white" stroke-width="6"/>
+  <circle cx="100" cy="100" r="68" stroke="white" stroke-width="4"/>
+  <line x1="72" y1="55" x2="72" y2="145" stroke="white" stroke-width="6"/>
+  <line x1="128" y1="55" x2="128" y2="145" stroke="white" stroke-width="6"/>
+  <line x1="72" y1="55" x2="128" y2="145" stroke="white" stroke-width="6"/>
+  <line x1="128" y1="55" x2="72" y2="145" stroke="white" stroke-width="6"/>
+  <line x1="62" y1="55" x2="138" y2="55" stroke="white" stroke-width="5"/>
+  <line x1="62" y1="145" x2="138" y2="145" stroke="white" stroke-width="5"/>
+  <path id="ta" d="M 20,100 A 80,80 0 0,1 180,100" fill="none"/>
+  <text font-family="Rajdhani,sans-serif" font-size="18" font-weight="700" fill="white" letter-spacing="8"><textPath href="#ta" startOffset="18%">XINIX</textPath></text>
+  <path id="ba" d="M 15,105 A 85,85 0 0,0 185,105" fill="none"/>
+  <text font-family="Rajdhani,sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="4"><textPath href="#ba" startOffset="8%">ORGANISATION</textPath></text>
+</svg>
+
+<script>
+var profils = {
+  informaticien: {
+    label: 'PROFIL 01',
+    title: 'Informaticien Polyvalent',
+    text: "Ce que nous cherchons n'est pas un technicien qui suit des tutoriels. Nous cherchons quelqu'un qui comprend les systèmes en profondeur — réseau, cybersécurité, OSINT, pentest, cryptographie. Pas besoin de tout maîtriser à 100%. Ce qui compte c'est de savoir où chercher, comment adapter, comment innover avec le minimum. Le genre de profil qui fait tourner un OS fluide sur une machine que tout le monde aurait jeté à la poubelle. Quelqu'un qui contourne les limites au lieu de les subir."
+  },
+  negociateur: {
+    label: 'PROFIL 02',
+    title: 'Négociateur Polyvalent',
+    text: "Pas un vendeur de marché. Quelqu'un qui sait construire une proposition et la faire accepter. Qui peut négocier n'importe quoi — de l'argent, des biens, du pouvoir, du terrain, de la liberté. Quelqu'un qui entre dans une pièce avec rien et en ressort avec ce qu'il voulait. Pas par manipulation grossière — par compréhension profonde de ce que l'autre veut vraiment."
+  },
+  juriste: {
+    label: 'PROFIL 03',
+    title: 'Juriste Polyvalent',
+    text: "Son rôle n'est pas de nous dire ce qu'on ne peut pas faire. N'importe quel avocat fait ça. Son rôle est de trouver ce que personne n'a encore interdit — les zones grises que la loi n'a pas anticipées, les vides juridiques que l'État n'a pas comblés. Naviguer là où les règles sont floues, sans jamais franchir la ligne morale. Quelqu'un qui lit un texte de loi et voit les portes que le législateur a oublié de fermer."
+  },
+  maker: {
+    label: 'PROFIL 04',
+    title: 'Maker Polyvalent',
+    text: "On ne cherche pas quelqu'un qui suit un schéma et assemble des pièces. On cherche quelqu'un dont l'imagination transforme une idée abstraite en objet réel en quelques semaines. Électronique, usinage, impression 3D, soudure, conception — peu importe l'outil. Ce qui compte c'est la capacité à partir de zéro et arriver à un produit fini fonctionnel. Quelqu'un qui voit une idée et sait déjà comment la construire avant même qu'on ait fini de l'expliquer."
+  },
+  broker: {
+    label: 'PROFIL 05',
+    title: 'Broker Relationnel',
+    text: "On ne cherche pas quelqu'un qui a mille contacts dans son téléphone dont il ne se souvient plus du visage. On cherche quelqu'un dont les contacts l'attendent vraiment. Quelqu'un qui appelle et on décroche. Quelqu'un qui demande une faveur et on dit oui avant même de savoir laquelle. Des relations solides dans des domaines variés — pas des connaissances superficielles. Quand il entre quelque part, il n'attend pas. Les portes s'ouvrent parce qu'on est content de le voir."
+  },
+  financier: {
+    label: 'PROFIL 06',
+    title: 'Financier Polyvalent',
+    text: "Son rôle dépasse largement la comptabilité. Il gère les contrats financiers, optimise nos revenus, construit des stratégies pour maximiser ce qu'on génère et minimiser ce qu'on perd. Il s'occupe des déclarations fiscales et trouve les leviers légaux pour payer moins sans risquer plus. Il est aussi notre chasseur — quand on a besoin de la meilleure offre, du meilleur fournisseur, du meilleur deal, c'est lui qui cherche et qui trouve. Quelqu'un qui voit de l'argent là où les autres voient des chiffres."
+  },
+  scientifique: {
+    label: 'PROFIL 07',
+    title: 'Scientifique Polyvalent',
+    text: "Pas un spécialiste enfermé dans un seul domaine. Quelqu'un qui navigue entre la chimie, la physique, les mathématiques et la mécanique avec la même aisance. Que ce soit en théorie ou en expérience pratique. Quelqu'un qui comprend pourquoi les choses fonctionnent — pas juste comment. Capable d'appliquer ses connaissances scientifiques à des problèmes concrets et de trouver des solutions là où d'autres voient des impossibilités."
+  },
+  porteparole: {
+    label: 'PROFIL 08',
+    title: 'Porte-parole & Communicant',
+    text: "C'est la seule voix publique de l'organisation. Il gère les réseaux sociaux, la communication extérieure, l'image qu'on choisit de montrer au monde. Parce qu'on ne restera pas entièrement dans l'ombre — ce qu'on montre sera calculé, maîtrisé, voulu. Quand on doit s'adresser à un public, c'est lui qui parle. Pas parce qu'il est le plus important — parce qu'il est le mieux placé pour contrôler ce que les autres perçoivent de nous. À l'aise aussi bien sur internet que face à une salle. Quelqu'un qui comprend que chaque mot prononcé en public est une décision stratégique."
+  },
+  securite: {
+    label: 'PROFIL 09',
+    title: 'Agent de Sécurité Polyvalent',
+    text: "Pas une grosse brute qu'on met devant une porte. Quelqu'un de physiquement capable — souple, léger, polyvalent en combat — mais surtout quelqu'un d'intelligent. Il sécurise les personnes, les biens, assure le transport et le dépôt de ce qui a de la valeur. Quelqu'un avec qui on se sent réellement en sécurité — pas parce qu'il fait peur, mais parce qu'il anticipe. Discret, stratégique, fiable. Le genre de profil dont on oublie la présence jusqu'au moment où on en a besoin."
+  }
+};
+
+function showProfil(id) {
+  var p = profils[id];
+  if (!p) return;
+  document.getElementById('modalLabel').textContent = p.label;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalText').textContent = p.text;
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalBg') && !e.target.classList.contains('modal-close')) return;
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>
